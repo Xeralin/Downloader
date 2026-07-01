@@ -160,10 +160,19 @@ def _run_download(cfg: dict, download: dict) -> None:
         if proton is not None:
             clear()
             render_header(_header_label(download, enable_hm))
-            icon = MEDIA_DIR / "hm_icon.png" if enable_hm else None
-            logo = MEDIA_DIR / "hm_title.png" if enable_hm else None
+            if enable_hm:
+                icon = MEDIA_DIR / "hm_icon.png"
+                logo = MEDIA_DIR / "hm_title.png"
+                hero = None
+                capsule = None
+            else:
+                icon = MEDIA_DIR / "tb_icon.png"
+                logo = MEDIA_DIR / "tb_logo.png"
+                hero = MEDIA_DIR / "tb_hero.png"
+                capsule = MEDIA_DIR / "tb_library.png"
             if apply_steam_setup(
-                name, launcher, target, proton, icon=icon, logo=logo
+                name, launcher, target, proton,
+                icon=icon, logo=logo, hero=hero, capsule=capsule,
             ):
                 added_to_steam = True
                 verb = "updated in" if existing else "added to"

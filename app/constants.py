@@ -3,7 +3,7 @@ import re
 import tempfile
 from pathlib import Path
 
-VERSION = "1.6.0"
+VERSION = "1.6.1"
 
 _COMPILED = globals().get("__compiled__")
 FROZEN = _COMPILED is not None

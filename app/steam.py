@@ -403,7 +403,12 @@ def _set_compat_tool(appid: int, internal_name: str) -> bool:
     return True
 
 
-def _write_grid_artwork(appid: int, logo: Path | None) -> None:
+def _write_grid_artwork(
+    appid: int,
+    logo: Path | None,
+    hero: Path | None,
+    capsule: Path | None,
+) -> None:
     user = _active_userdata()
     if user is None:
         return
@@ -420,6 +425,10 @@ def _write_grid_artwork(appid: int, logo: Path | None) -> None:
             },
         }
         (grid / f"{appid}.json").write_text(json.dumps(position))
+    if hero and hero.exists():
+        shutil.copy2(hero, grid / f"{appid}_hero{hero.suffix}")
+    if capsule and capsule.exists():
+        shutil.copy2(capsule, grid / f"{appid}p{capsule.suffix}")
 
 
 def screen_delete_prefix(downloads: list[dict]) -> None:
@@ -484,6 +493,8 @@ def apply_steam_setup(
     proton: dict,
     icon: Path | None = None,
     logo: Path | None = None,
+    hero: Path | None = None,
+    capsule: Path | None = None,
 ) -> bool:
     if is_steam_running():
         step_warn("Close Steam completely to apply")
@@ -502,6 +513,6 @@ def apply_steam_setup(
         step_fail("Could not write shortcuts.vdf")
         return False
 
-    _write_grid_artwork(appid, logo)
+    _write_grid_artwork(appid, logo, hero, capsule)
 
     return True
